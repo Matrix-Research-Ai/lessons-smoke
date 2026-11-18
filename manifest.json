@@ -1,5 +1,23 @@
 {
   "schema": 1,
-  "updated": "",
-  "lessons": []
+  "updated": "2026-11-18T20:40:43Z",
+  "lessons": [
+    {
+      "slug": "dokimastiko-mathima-ilektrotechnias-v2",
+      "title": "Δοκιμαστικό Μάθημα Ηλεκτροτεχνίας v2",
+      "subject": "lp-test",
+      "section": "",
+      "description": "",
+      "entry": "v2.html",
+      "version": "v2",
+      "source": "C:\\Users\\andromeas\\AppData\\Local\\Temp\\lp-test\\Μάθημα Δοκιμής",
+      "updated": "2026-11-18T20:40:43Z",
+      "files": [
+        "img/x.svg",
+        "notes.txt",
+        "v1.html",
+        "v2.html"
+      ]
+    }
+  ]
 }
