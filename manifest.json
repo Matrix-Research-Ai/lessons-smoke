@@ -1,20 +1,5 @@
 {
   "schema": 1,
-  "updated": "2026-11-18T20:43:38Z",
-  "lessons": [
-    {
-      "slug": "dokimastiko-mathima-ilektrotechnias-v2",
-      "title": "Δοκιμαστικό Μάθημα v3",
-      "subject": "lp-test",
-      "section": "Πρωινό",
-      "description": "Δοκιμή ενημέρωσης",
-      "entry": "v3.html",
-      "version": "v3",
-      "source": "selftest",
-      "updated": "2026-11-18T20:43:38Z",
-      "files": [
-        "v3.html"
-      ]
-    }
-  ]
+  "updated": "2026-11-18T20:44:07Z",
+  "lessons": []
 }
