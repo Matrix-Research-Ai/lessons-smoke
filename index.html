@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Μαθήματα — Βιβλιοθήκη</title>
+<meta name="description" content="Σχέδια μαθήματος, διαδραστικά φύλλα και προσομοιώσεις · ΕΠΑΛ">
+<style>
+  :root{
+    --ink:#0f1b2d; --muted:#5b6b80; --line:#e2e8f2; --brand:#003366;
+    --brand2:#00509e; --teal:#00897b; --bg:#f5f7fb; --card:#ffffff;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font-family:"Segoe UI",Roboto,system-ui,-apple-system,Arial,sans-serif;
+       line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+  header{background:linear-gradient(135deg,#003366 0%,#00509e 55%,#00796b 100%);
+         color:#fff;padding:38px 0 30px;}
+  header h1{margin:0 0 6px;font-size:1.7rem;letter-spacing:-.01em;}
+  header .sub{opacity:.86;font-size:.95rem;margin:0;}
+  header .stats{margin-top:14px;font-size:.82rem;opacity:.8;}
+  .tools{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;align-items:center;}
+  .search{flex:1 1 280px;position:relative;}
+  .search input{width:100%;padding:12px 16px 12px 40px;border-radius:10px;border:0;
+      font-size:.95rem;font-family:inherit;color:var(--ink);outline:none;
+      box-shadow:0 6px 18px rgba(0,0,0,.18);}
+  .search input:focus{box-shadow:0 0 0 3px rgba(255,255,255,.4),0 6px 18px rgba(0,0,0,.18);}
+  .search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);opacity:.45;}
+  .chip{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);
+        color:#fff;border-radius:999px;padding:8px 14px;font-size:.84rem;font-family:inherit;
+        font-weight:600;cursor:pointer;transition:.15s;}
+  .chip:hover{background:rgba(255,255,255,.24);}
+  .chip.on{background:#fff;color:var(--brand);border-color:#fff;}
+  main{padding:30px 0 70px;}
+  .group{margin:0 0 34px;}
+  .ghead{display:flex;align-items:baseline;gap:10px;border-bottom:2px solid var(--line);
+         padding-bottom:9px;margin-bottom:16px;}
+  .ghead h2{font-size:1.02rem;margin:0;color:var(--brand);font-weight:700;}
+  .gcount{font-size:.78rem;color:var(--muted);}
+  .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));}
+  a.card{display:flex;flex-direction:column;gap:9px;background:var(--card);
+      border:1px solid var(--line);border-radius:14px;padding:16px 17px 14px;
+      text-decoration:none;color:inherit;transition:transform .15s,box-shadow .15s,border-color .15s;
+      box-shadow:0 1px 2px rgba(15,27,45,.05);}
+  a.card:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(15,27,45,.11);
+      border-color:#c8d8ee;}
+  .pill{display:inline-block;font-size:.71rem;font-weight:700;padding:3px 9px;
+      border-radius:999px;background:#e9f1fb;color:#0b4a86;letter-spacing:.02em;}
+  .ver{background:#e6f6f4;color:#00695c;margin-left:6px;}
+  a.card h3{margin:1px 0 0;font-size:1.02rem;line-height:1.36;font-weight:700;}
+  a.card p{margin:0;font-size:.845rem;color:var(--muted);}
+  .meta{display:flex;justify-content:space-between;align-items:center;gap:10px;
+      margin-top:auto;padding-top:11px;border-top:1px dashed var(--line);
+      font-size:.775rem;color:var(--muted);}
+  .go{color:var(--brand2);font-weight:700;white-space:nowrap;}
+  .empty{text-align:center;color:var(--muted);padding:60px 10px;font-size:.95rem;}
+  .hidden{display:none !important;}
+  footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--muted);
+      font-size:.79rem;}
+  footer a{color:var(--brand2);text-decoration:none;font-weight:600;}
+  @media(max-width:600px){
+    .wrap{padding:0 15px;} header{padding:26px 0 22px;} header h1{font-size:1.32rem;}
+    main{padding:20px 0 50px;} .grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Μαθήματα — Βιβλιοθήκη</h1>
+    <p class="sub">Σχέδια μαθήματος, διαδραστικά φύλλα και προσομοιώσεις · ΕΠΑΛ</p>
+    <div class="stats" id="stats"></div>
+    <div class="tools">
+      <div class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0f1b2d"
+             stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Αναζήτηση μαθήματος, ενότητας, τύπου…"
+               autocomplete="off" aria-label="Αναζήτηση">
+      </div>
+      <div id="chips" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <div id="body"></div>
+  <div class="empty hidden" id="empty">Δεν βρέθηκε μάθημα με αυτούς τους όρους.</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    Ενημερώνεται αυτόματα από το <strong>Lesson Publisher</strong> ·
+    τελευταία ενημέρωση: <span id="upd">—</span> ·
+    <a href="https://github.com/Matrix-Research-Ai/lessons-smoke">πηγή στο GitHub</a>
+  </div>
+</footer>
+
+<script>
+const DATA = {"schema": 1, "updated": "", "lessons": [], "updated_el": ""};
+const bodyEl = document.getElementById('body');
+const emptyEl = document.getElementById('empty');
+const statsEl = document.getElementById('stats');
+const chipBox = document.getElementById('chips');
+const qEl = document.getElementById('q');
+let activeSubject = null;
+
+function esc(s){return String(s||'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function groups(list){
+  const map = new Map();
+  for(const it of list){
+    const k = it.subject || 'Άλλα';
+    if(!map.has(k)) map.set(k, []);
+    map.get(k).push(it);
+  }
+  return [...map.entries()].sort((a,b)=>a[0].localeCompare(b[0],'el'));
+}
+function card(it){
+  const meta = [it.section, it.date_el].filter(Boolean).join(' · ');
+  const desc = it.description ? `<p>${esc(it.description)}</p>` : '';
+  const ver = it.version ? `<span class="pill ver">${esc(it.version)}</span>` : '';
+  return `<a class="card" href="./${esc(it.slug)}/">
+    <div><span class="pill">${esc(it.subject||'Άλλο')}</span>${ver}</div>
+    <h3>${esc(it.title)}</h3>
+    ${desc}
+    <div class="meta"><span>${esc(meta)}</span><span class="go">Άνοιγμα →</span></div>
+  </a>`;
+}
+function render(){
+  const q = (qEl.value||'').trim().toLowerCase();
+  const list = DATA.lessons.filter(it=>{
+    if(activeSubject && (it.subject||'Άλλα') !== activeSubject) return false;
+    if(!q) return true;
+    return [it.title, it.subject, it.description, it.section, it.keywords]
+      .join(' ').toLowerCase().includes(q);
+  });
+  const gs = groups(list);
+  bodyEl.innerHTML = gs.map(([name, items])=>
+    `<section class="group"><div class="ghead"><h2>${esc(name)}</h2>
+      <span class="gcount">${items.length}</span></div>
+      <div class="grid">${items.map(card).join('')}</div></section>`).join('');
+  emptyEl.classList.toggle('hidden', gs.length>0);
+}
+function chips(){
+  const names = [...new Set(DATA.lessons.map(i=>i.subject||'Άλλα'))].sort((a,b)=>a.localeCompare(b,'el'));
+  if(names.length < 2) return;
+  chipBox.innerHTML = `<button class="chip on" data-s="">Όλα (${DATA.lessons.length})</button>` +
+    names.map(n=>`<button class="chip" data-s="${esc(n)}">${esc(n)}</button>`).join('');
+  chipBox.querySelectorAll('.chip').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      activeSubject = btn.dataset.s || null;
+      chipBox.querySelectorAll('.chip').forEach(b=>b.classList.toggle('on', b===btn));
+      render();
+    });
+  });
+}
+const n = DATA.lessons.length;
+const subj = new Set(DATA.lessons.map(i=>i.subject||'Άλλα')).size;
+statsEl.textContent = `${n} ${n===1?'μάθημα':'μαθήματα'} · ${subj} ${subj===1?'ενότητα':'ενότητες'}`;
+document.getElementById('upd').textContent = DATA.updated_el || '—';
+qEl.addEventListener('input', render);
+chips();
+render();
+</script>
+</body>
+</html>
